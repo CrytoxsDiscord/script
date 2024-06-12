@@ -35,7 +35,7 @@ AimSection:AddButton({
     Name = "ESP",
     Callback = function()
         print("ESP activated")
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Iratethisname10/UnboundedYieldV2/main/loader.lua'))()
+        loadstring(game:HttpGet(('https://raw.githubusercontent.com/Exunys/ESP-Script/main/ESP.lua'),true))()
     end
 })
 
