@@ -1,157 +1,194 @@
--- Load the Orion Library
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
 
--- Create the main window
-local Window = OrionLib:MakeWindow({
-    Name = "South Bronx: The Trenches",
-    HidePremium = false,
-    SaveConfig = true,
-    ConfigFolder = "SouthBronxTrenches",
-    IntroEnabled = false
+local Window = Rayfield:CreateWindow({
+    Name = "SiriusHub",
+    LoadingTitle = "SiriusHub Script Hub",
+    LoadingSubtitle = "by Sirius",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "SiriusHub",
+        FileName = "config"
+    },
+    KeySystem = true,
+    KeySettings = {
+        Title = "SiriusHub",
+        Subtitle = "Key System",
+        Note = "Key: sirushub245",
+        SaveKey = true,
+        Key = "sirushub245"
+    }
 })
 
--- Create a notification to indicate the script has been injected
-OrionLib:MakeNotification({
-    Name = "Injected",
-    Content = "The script has been successfully injected.",
-    Image = "rbxassetid://4483345998",
-    Time = 5
-})
+local autofarmTab = Window:CreateTab("Autofarm", 4483362458)
 
--- Create the Aim tab
-local AimTab = Window:MakeTab({
-    Name = "Aim",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
--- Add a section to the Aim tab
-local AimSection = AimTab:AddSection({
-    Name = "Features"
-})
-
--- Add a button for ESP functionality
-AimSection:AddButton({
-    Name = "ESP",
+local boxJobButton = autofarmTab:CreateButton({
+    Name = "Box Job Autofarm",
     Callback = function()
-        print("ESP activated")
-        loadstring(game:HttpGet(('https://raw.githubusercontent.com/Exunys/ESP-Script/main/ESP.lua'),true))()
-    end
-})
+        -- Box Job Autofarm Script
+        local player = game.Players.LocalPlayer
+        local VirtualInputManager = game:GetService("VirtualInputManager")
 
--- Add a button for Bighead functionality
-AimSection:AddButton({
-    Name = "Bighead",
-    Callback = function()
-        print("Bighead activated")
+        local running = true
 
-        local Players = game:GetService("Players")
-        local RunService = game:GetService("RunService")
-
-        RunService.Stepped:Connect(function()
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= Players.LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
-                    local head = player.Character.Head
-                    head.CanCollide = false
-                    head.Size = Vector3.new(6, 6, 6)
-                    head.Transparency = 0.5
-                end
+        local function walkToPosAndHold(x, y, z, key, holdDuration)
+            local character = player.Character
+            if not character then
+                warn("Character not found for player: " .. player.Name)
+                return
             end
-        end)
+
+            local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+            if not humanoid then
+                warn("Humanoid not found in character")
+                return
+            end
+
+            local originalWalkSpeed = humanoid.WalkSpeed
+            humanoid.WalkSpeed = 20
+
+            humanoid:MoveTo(Vector3.new(x, y, z))
+            print("Walking to position (" .. x .. ", " .. y .. ", " .. z .. ")")
+
+            humanoid.MoveToFinished:Wait()
+
+            local keyCode = Enum.KeyCode[string.upper(key)]
+            if keyCode then
+                VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
+                print("Pressing " .. key .. " key for " .. holdDuration .. " seconds")
+                wait(holdDuration)
+                VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
+                print("Releasing " .. key .. " key")
+            else
+                warn("Invalid key: " .. key)
+            end
+
+            humanoid.WalkSpeed = originalWalkSpeed
+        end
+
+        local function equipToolFromBackpack(toolName)
+            local character = player.Character
+            if not character then
+                warn("Character not found for player: " .. player.Name)
+                return
+            end
+
+            local tool = player.Backpack:FindFirstChild(toolName)
+            if not tool then
+                warn("Tool not found in backpack: " .. toolName)
+                return
+            end
+
+            tool.Parent = character
+            tool:Activate()
+            print("Equipped " .. toolName)
+        end
+
+        while running do
+            walkToPosAndHold(-552.7131, 3.5371, -86.2408, 'e', 2)
+            equipToolFromBackpack("Crate")
+            walkToPosAndHold(-403.3928, 3.4122, -71.8816, 'e', 2)
+        end
     end
 })
 
--- Add a button for Silent Aim functionality
-AimSection:AddButton({
-    Name = "Silent Aim",
+local trashJobButton = autofarmTab:CreateButton({
+    Name = "Trash Job Autofarm",
     Callback = function()
-        print("Silent Aim activated")
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Averiias/Universal-SilentAim/main/main.lua'))()
+        -- Trash Job Autofarm Script
+        local player = game.Players.LocalPlayer
+        local VirtualInputManager = game:GetService("VirtualInputManager")
+
+        local running = true
+
+        local function walkToPosAndHold(x, y, z, key, holdDuration)
+            local character = player.Character
+            if not character then
+                warn("Character not found for player: " .. player.Name)
+                return
+            end
+
+            local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+            if not humanoid then
+                warn("Humanoid not found in character")
+                return
+            end
+
+            local originalWalkSpeed = humanoid.WalkSpeed
+            humanoid.WalkSpeed = 20
+
+            humanoid:MoveTo(Vector3.new(x, y, z))
+            print("Walking to position (" .. x .. ", " .. y .. ", " .. z .. ")")
+
+            humanoid.MoveToFinished:Wait()
+
+            local keyCode = Enum.KeyCode[string.upper(key)]
+            if keyCode then
+                VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
+                print("Pressing " .. key .. " key for " .. holdDuration .. " seconds")
+                wait(holdDuration)
+                VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
+                print("Releasing " .. key .. " key")
+            else
+                warn("Invalid key: " .. key)
+            end
+
+            humanoid.WalkSpeed = originalWalkSpeed
+        end
+
+        local function equipToolFromBackpack(toolName)
+            local character = player.Character
+            if not character then
+                warn("Character not found for player: " .. player.Name)
+                return
+            end
+
+            local tool = player.Backpack:FindFirstChild(toolName)
+            if not tool then
+                warn("Tool not found in backpack: " .. toolName)
+                return
+            end
+
+            tool.Parent = character
+            tool:Activate()
+            print("Equipped " .. toolName)
+        end
+
+        while running do
+            walkToPosAndHold(700.8188, 3.5372, 164.5239, 'e', 2)
+            equipToolFromBackpack("TrashBag")
+            walkToPosAndHold(726.8205, 3.4122, 211.7214, 'e', 2)
+        end
     end
 })
 
--- Create the Spawners tab
-local SpawnersTab = Window:MakeTab({
-    Name = "Spawners",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
+local aimTab = Window:CreateTab("Aim", 4483362458)
 
--- Add a section to the Spawners tab
-local SpawnersSection = SpawnersTab:AddSection({
-    Name = "Features"
-})
-
--- Add a button for the Draco spawner
-SpawnersSection:AddButton({
-    Name = "Draco",
+local airhubButton = aimTab:CreateButton({
+    Name = "Airhub",
     Callback = function()
-        print("Draco activated")
-        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/sg d")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Exunys/AirHub/main/AirHub.lua"))()
     end
 })
 
--- Create the Grind tab
-local GrindTab = Window:MakeTab({
-    Name = "Grind",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
--- Add a section to the Grind tab
-local GrindSection = GrindTab:AddSection({
-    Name = "Features"
-})
-
--- Add buttons to the Grind section
-GrindSection:AddButton({
-    Name = "CHIPS [SOON]",
+local azureModdedButton = aimTab:CreateButton({
+    Name = "AzureModded",
     Callback = function()
-        print("CHIPS [SOON]")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Actyrn/Scripts/main/AzureModded"))()
     end
 })
 
-GrindSection:AddButton({
-    Name = "BOXES [SOON]",
+local miscTab = Window:CreateTab("Misc", 4483362458)
+
+local itemNotifierButton = miscTab:CreateButton({
+    Name = "Item Notifier",
     Callback = function()
-        print("BOXES [SOON]")
+        -- Add your script for Item Notifier here
     end
 })
 
-GrindSection:AddButton({
-    Name = "CARDS [SOON]",
+local destroyUIButton = Window:CreateButton({
+    Name = "Destroy UI",
     Callback = function()
-        print("CARDS [SOON]")
+        Rayfield:Destroy()
     end
 })
-
-GrindSection:AddButton({
-    Name = "TRASH [SOON]",
-    Callback = function()
-        print("TRASH [SOON]")
-    end
-})
-
--- Create the Misc tab
-local MiscTab = Window:MakeTab({
-    Name = "Misc",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
--- Add a section for the Destroy button in the Misc tab
-local MiscSection = MiscTab:AddSection({
-    Name = "Actions"
-})
-
--- Add a button to destroy the GUI
-MiscSection:AddButton({
-    Name = "Destroy",
-    Callback = function()
-        print("GUI destroyed")
-        OrionLib:Destroy()
-    end
-})
-
--- Initialize the Orion Library
-OrionLib:Init()
